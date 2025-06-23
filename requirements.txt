@@ -1,0 +1,5 @@
+Flask
+google-ads
+gunicorn
+flask-cors
+tabulate
