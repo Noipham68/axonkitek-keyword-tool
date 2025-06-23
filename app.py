@@ -2,7 +2,7 @@ import os
 import yaml
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
-from google.ads.google_ads.client import GoogleAdsClient
+from google.ads.googleads.client import GoogleAdsClient
 
 # --- Cấu hình Google Ads từ env vars hoặc google-ads.yaml ---
 # Cách đơn giản: tải google-ads.yaml lên cùng repo, load từ đó.
