@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Keyword Metrics Checker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Keyword Metrics Checker</h1>
+  <textarea id="kws" placeholder="Mỗi dòng 1 keyword"></textarea>
+  <select id="tf">
+    <option value="daily">Ngày</option>
+    <option value="weekly">Tuần</option>
+    <option value="monthly" selected>Tháng</option>
+    <option value="yearly">Năm</option>
+  </select>
+  <button onclick="check()">Check</button>
+  <div id="out"></div>
+
+  <script>
+    async function check(){
+      const kws = document.getElementById('kws').value.trim().split('\n');
+      const tf  = document.getElementById('tf').value;
+      const res = await fetch('/api/metrics', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({keywords:kws, timeframe:tf})
+      });
+      const data = await res.json();
+      let html = '<table><tr><th>Keyword</th><th>Volume</th><th>Competition</th><th>Low ($)</th><th>High ($)</th></tr>';
+      data.forEach(r=>{
+        html+=`<tr>
+          <td>${r.keyword}</td>
+          <td>${r.volume}</td>
+          <td>${r.competition}</td>
+          <td>${r.low.toFixed(2)}</td>
+          <td>${r.high.toFixed(2)}</td>
+        </tr>`;
+      });
+      html += '</table>';
+      document.getElementById('out').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
